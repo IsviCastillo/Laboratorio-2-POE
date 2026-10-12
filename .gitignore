@@ -1,0 +1,12 @@
+node_modules/
+dist/
+
+# Archivos generados y del sistema operativo
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Configuración local de editores
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
