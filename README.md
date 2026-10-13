@@ -2,6 +2,122 @@
 
 Aplicación web para administrar un catálogo personal de libros. Desarrollada con **TypeScript** siguiendo la arquitectura **MVC**, sin frameworks, con persistencia en `localStorage`.
 
+## Ejecución del proyecto
+
+Estas son las instrucciones para descargar y ejecutar el proyecto desde una computadora nueva. El procedimiento fue probado desde otro equipo.
+
+### Requisitos previos
+
+Antes de comenzar, instala:
+
+- **Node.js 18 o superior**, que incluye `npm`.
+- **Git**, para descargar el repositorio.
+- Un navegador web actualizado, como Chrome, Edge, Firefox o Safari.
+
+Puedes comprobar que Node.js y npm estén instalados ejecutando:
+
+```bash
+node --version
+npm --version
+```
+
+### 1. Descargar el repositorio
+
+Clona el repositorio y entra en la carpeta del proyecto:
+
+```bash
+git clone https://github.com/IsviCastillo/Laboratorio-2-POE.git
+cd Laboratorio-2-POE
+```
+
+Si ya descargaste el proyecto como archivo `.zip`, descomprímelo y abre una terminal dentro de la carpeta que contiene `package.json`.
+
+### 2. Instalar las dependencias
+
+Ejecuta:
+
+```bash
+npm install
+```
+
+Este comando instala las dependencias declaradas en `package.json` y prepara el proyecto para compilarse. También crea o actualiza la carpeta `node_modules`.
+
+### 3. Compilar TypeScript
+
+Ejecuta:
+
+```bash
+npm run build
+```
+
+Este comando compila los archivos TypeScript de `src/` y genera los archivos JavaScript en `dist/`. Debe finalizar sin errores antes de iniciar la aplicación.
+
+### 4. Iniciar el servidor
+
+Ejecuta:
+
+```bash
+npm start
+```
+
+El proyecto se servirá localmente en:
+
+<http://localhost:8080>
+
+Abre esa dirección en el navegador para utilizar el catálogo.
+
+### Resumen de comandos
+
+Después de descargar el repositorio, los tres comandos principales son:
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+Para detener el servidor, regresa a la terminal y presiona `Ctrl + C`.
+
+> No abras `index.html` directamente con `file://`. La aplicación utiliza módulos ES y debe ejecutarse mediante un servidor HTTP con `npm start` o con una extensión como *Live Server* de VS Code.
+
+
+### Solución de problemas
+
+#### `npm` o `node` no se reconoce
+
+Instala Node.js desde <https://nodejs.org/> y reinicia la terminal. Comprueba la instalación con:
+
+```bash
+node --version
+npm --version
+```
+
+#### El comando `npm run build` muestra errores
+
+Confirma que estás dentro de la carpeta correcta y que ejecutaste primero `npm install`:
+
+```bash
+pwd
+ls
+npm install
+npm run build
+```
+
+En Windows, el equivalente de `pwd` y `ls` puede ejecutarse también como:
+
+```powershell
+Get-Location
+Get-ChildItem
+```
+
+#### El navegador no abre la aplicación
+
+Comprueba que `npm start` siga ejecutándose en la terminal y visita manualmente <http://localhost:8080>. Si el puerto está ocupado, cierra el proceso que lo utiliza o reinicia la terminal.
+
+#### Los libros no aparecen después de cerrar el navegador
+
+Los datos se guardan en el `localStorage` del navegador y del mismo origen (`http://localhost:8080`). Si cambias de navegador, eliminas los datos del sitio o abres el proyecto con otra dirección, verás un almacenamiento diferente.
+
 ## Funcionalidades
 
 - Registrar libros (título, autor y año) mediante formulario.
@@ -38,20 +154,6 @@ La Vista no conoce el almacenamiento y el Modelo no conoce el DOM.
 - **Tipos unión**: `FiltroEstado = "todos" | "leidos" | "pendientes"`, `TipoMensaje`.
 - Modo `strict` activado en `tsconfig.json`.
 
-## Instalación y ejecución
-
-Requisitos: Node.js 18 o superior.
-
-```bash
-npm install        # instala TypeScript
-npm run build      # compila src/ → dist/
-npm start          # sirve el proyecto en http://localhost:8080
-```
-
-> Los módulos ES requieren servir los archivos por HTTP; abrir `index.html` directamente con `file://` no funciona. Usa `npm start` o la extensión *Live Server* de VS Code.
-
-Para desarrollo: `npm run watch` recompila al guardar.
-
 ## Estructura
 
 ```
@@ -73,11 +175,4 @@ catalogo-libros/
 
 - Título y autor: obligatorios, mínimo 2 caracteres.
 - Año: entero entre 1000 y el año actual + 1.
-
-## Guía rápida para la defensa
-
-- **¿Por qué MVC?** Separa datos, interfaz y lógica; facilita mantenimiento y pruebas.
-- **¿Dónde se valida?** En el modelo (`Libro.validar`); el controlador decide qué mostrar.
-- **¿Cómo se persiste?** `StorageService` serializa a JSON en `localStorage`; se carga al iniciar el controlador.
-- **¿Cómo funcionan los botones de cada tarjeta?** Delegación de eventos en el contenedor de la lista usando `data-accion` y `data-id`.
 
