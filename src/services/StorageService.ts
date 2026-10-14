@@ -9,7 +9,12 @@ export class StorageService {
       if (!raw) return [];
       const datos: unknown = JSON.parse(raw);
       if (!Array.isArray(datos)) return [];
-      return (datos as LibroData[]).map((d) => Libro.desdeData(d));
+
+      const lista = datos as LibroData[];
+      const idsValidos = lista.every((d) => Number.isInteger(d.id));
+      return lista.map((d, i) =>
+        Libro.desdeData(idsValidos ? d : { ...d, id: i + 1 })
+      );
     } catch {
       return [];
     }

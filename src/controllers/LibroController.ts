@@ -1,18 +1,17 @@
-import { FiltroEstado, Libro, LibroInput } from "../models/Libro.js";
+import { CatalogoLibros } from "../models/CatalogoLibros.js";
+import { FiltroEstado, LibroInput } from "../models/Libro.js";
 import { StorageService } from "../services/StorageService.js";
 import { LibroView } from "../views/LibroView.js";
 
 export class LibroController {
-  private libros: Libro[];
   private textoBusqueda = "";
   private filtro: FiltroEstado = "todos";
 
   constructor(
+    private readonly catalogo: CatalogoLibros,
     private readonly view: LibroView,
     private readonly storage: StorageService
-  ) {
-    this.libros = this.storage.cargar();
-  }
+  ) {}
 
   public iniciar(): void {
     this.view.enlazar({
@@ -33,70 +32,58 @@ export class LibroController {
     this.refrescar();
   }
 
-  private guardar(input: LibroInput, idEdicion: string | null): void {
-    const resultado = Libro.validar(input);
-    if (!resultado.valido) {
+  private guardar(input: LibroInput, idEdicion: number | null): void {
+    const resultado =
+      idEdicion === null
+        ? this.catalogo.agregar(input)
+        : this.catalogo.actualizar(idEdicion, input);
+
+    if (!resultado.exito) {
       this.view.mostrarMensaje(resultado.errores, "error");
       return;
     }
 
-    if (idEdicion) {
-      const libro = this.buscarPorId(idEdicion);
-      if (!libro) return;
-      libro.actualizar(input);
-      this.persistir("Libro actualizado correctamente.");
-    } else {
-      this.libros.push(Libro.crear(input));
-      this.persistir("Libro agregado correctamente.");
-    }
+    this.persistir(
+      idEdicion === null
+        ? "Libro agregado correctamente."
+        : "Libro actualizado correctamente."
+    );
     this.view.salirModoEdicion();
     this.refrescar();
   }
 
-  private iniciarEdicion(id: string): void {
-    const libro = this.buscarPorId(id);
+  private iniciarEdicion(id: number): void {
+    const libro = this.catalogo.obtenerPorId(id);
     if (libro) this.view.entrarModoEdicion(libro);
   }
 
-  private alternarEstado(id: string): void {
-    const libro = this.buscarPorId(id);
+  private alternarEstado(id: number): void {
+    const libro = this.catalogo.alternarLeido(id);
     if (!libro) return;
-    libro.alternarLeido();
     this.persistir(libro.leido ? "Marcado como leído." : "Marcado como pendiente.");
     this.refrescar();
   }
 
-  private eliminar(id: string): void {
-    const libro = this.buscarPorId(id);
+  private eliminar(id: number): void {
+    const libro = this.catalogo.obtenerPorId(id);
     if (!libro) return;
     if (!this.view.confirmar(`¿Eliminar "${libro.titulo}"?`)) return;
-    this.libros = this.libros.filter((l) => l.id !== id);
+    this.catalogo.eliminar(id);
     this.persistir("Libro eliminado.");
     this.view.salirModoEdicion();
     this.refrescar();
   }
 
-  private obtenerFiltrados(): Libro[] {
-    return this.libros
-      .filter((l) => l.coincideCon(this.textoBusqueda))
-      .filter((l) => {
-        if (this.filtro === "leidos") return l.leido;
-        if (this.filtro === "pendientes") return !l.leido;
-        return true;
-      });
-  }
-
   private refrescar(): void {
     this.view.marcarFiltro(this.filtro);
-    this.view.renderLista(this.obtenerFiltrados(), this.libros.length);
-  }
-
-  private buscarPorId(id: string): Libro | undefined {
-    return this.libros.find((l) => l.id === id);
+    this.view.renderLista(
+      this.catalogo.filtrar(this.textoBusqueda, this.filtro),
+      this.catalogo.total()
+    );
   }
 
   private persistir(mensajeExito: string): void {
-    if (this.storage.guardar(this.libros)) {
+    if (this.storage.guardar(this.catalogo.obtenerTodos())) {
       this.view.mostrarMensaje(mensajeExito, "exito");
     } else {
       this.view.mostrarMensaje("No se pudo guardar en localStorage.", "error");

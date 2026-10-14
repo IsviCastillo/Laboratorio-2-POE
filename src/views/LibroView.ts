@@ -3,12 +3,12 @@ import { FiltroEstado, Libro, LibroInput } from "../models/Libro.js";
 export type TipoMensaje = "exito" | "error" | "info";
 
 export interface ManejadoresVista {
-  onGuardar: (input: LibroInput, idEdicion: string | null) => void;
+  onGuardar: (input: LibroInput, idEdicion: number | null) => void;
   onBuscar: (texto: string) => void;
   onFiltrar: (filtro: FiltroEstado) => void;
-  onAlternar: (id: string) => void;
-  onEditar: (id: string) => void;
-  onEliminar: (id: string) => void;
+  onAlternar: (id: number) => void;
+  onEditar: (id: number) => void;
+  onEliminar: (id: number) => void;
   onCancelarEdicion: () => void;
 }
 
@@ -27,7 +27,7 @@ export class LibroView {
   private readonly botonesFiltro =
     document.querySelectorAll<HTMLButtonElement>("[data-filtro]");
 
-  private idEdicion: string | null = null;
+  private idEdicion: number | null = null;
   private temporizador: number | undefined;
 
   public enlazar(m: ManejadoresVista): void {
@@ -49,8 +49,8 @@ export class LibroView {
     this.lista.addEventListener("click", (e: Event) => {
       const objetivo = (e.target as HTMLElement).closest<HTMLElement>("[data-accion]");
       if (!objetivo) return;
-      const id = objetivo.dataset.id;
-      if (!id) return;
+      const id = Number(objetivo.dataset.id);
+      if (!Number.isInteger(id)) return;
       switch (objetivo.dataset.accion) {
         case "alternar":
           m.onAlternar(id);
@@ -82,7 +82,7 @@ export class LibroView {
         (l) => `
       <article class="tarjeta ${l.leido ? "leido" : "pendiente"}">
         <div class="tarjeta-info">
-          <h3>${this.escapar(l.titulo)}</h3>
+          <h3><span class="id-libro">#${l.id}</span> ${this.escapar(l.titulo)}</h3>
           <p class="autor">${this.escapar(l.autor)} · ${l.anio}</p>
           <span class="estado">${l.leido ? "✔ Leído" : "⏳ Pendiente"}</span>
         </div>
@@ -109,7 +109,7 @@ export class LibroView {
     this.inTitulo.value = libro.titulo;
     this.inAutor.value = libro.autor;
     this.inAnio.value = String(libro.anio);
-    this.tituloForm.textContent = "Editar libro";
+    this.tituloForm.textContent = `Editar libro #${libro.id}`;
     this.btnGuardar.textContent = "Guardar cambios";
     this.btnCancelar.hidden = false;
     this.inTitulo.focus();

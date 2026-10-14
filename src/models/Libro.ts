@@ -1,5 +1,5 @@
 export interface LibroData {
-  id: string;
+  id: number;
   titulo: string;
   autor: string;
   anio: number;
@@ -23,7 +23,7 @@ export class Libro implements LibroData {
   public static readonly ANIO_MINIMO = 1000;
 
   constructor(
-    public readonly id: string,
+    public readonly id: number,
     public titulo: string,
     public autor: string,
     public anio: number,
@@ -52,14 +52,8 @@ export class Libro implements LibroData {
     return { valido: errores.length === 0, errores };
   }
 
-  public static crear(input: LibroInput): Libro {
-    return new Libro(
-      Libro.generarId(),
-      input.titulo.trim(),
-      input.autor.trim(),
-      input.anio,
-      false
-    );
+  public static crear(id: number, input: LibroInput): Libro {
+    return new Libro(id, input.titulo.trim(), input.autor.trim(), input.anio, false);
   }
 
   public static desdeData(data: LibroData): Libro {
@@ -79,9 +73,19 @@ export class Libro implements LibroData {
   public coincideCon(texto: string): boolean {
     const t = texto.trim().toLowerCase();
     if (!t) return true;
+    const idBuscado = t.startsWith("#") ? t.slice(1) : t;
     return (
       this.titulo.toLowerCase().includes(t) ||
-      this.autor.toLowerCase().includes(t)
+      this.autor.toLowerCase().includes(t) ||
+      String(this.id) === idBuscado
+    );
+  }
+
+  public esDuplicadoDe(input: LibroInput): boolean {
+    const normalizar = (s: string): string => s.trim().toLowerCase();
+    return (
+      normalizar(this.titulo) === normalizar(input.titulo) &&
+      normalizar(this.autor) === normalizar(input.autor)
     );
   }
 
@@ -93,9 +97,5 @@ export class Libro implements LibroData {
       anio: this.anio,
       leido: this.leido,
     };
-  }
-
-  private static generarId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   }
 }

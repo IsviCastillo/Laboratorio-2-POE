@@ -134,3 +134,15 @@ button.peligro:hover { background: #fbeceb; }
 @media (max-width: 560px) {
   .tarjeta { flex-direction: column; align-items: flex-start; }
 }
+
+.id-libro {
+  display: inline-block;
+  margin-right: .3rem;
+  padding: .05rem .45rem;
+  border-radius: 6px;
+  background: var(--primario);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 600;
+  vertical-align: middle;
+}

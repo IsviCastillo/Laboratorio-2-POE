@@ -122,7 +122,9 @@ Los datos se guardan en el `localStorage` del navegador y del mismo origen (`htt
 
 - Registrar libros (título, autor y año) mediante formulario.
 - Listar libros en tarjetas.
-- Buscar por título o autor (en tiempo real).
+- Buscar por título, autor o ID (`#3`) en tiempo real.
+- IDs numéricos consecutivos visibles en cada tarjeta.
+- Bloqueo de libros duplicados (mismo título y autor).
 - Marcar libros como **leídos** o **pendientes**.
 - Editar y eliminar libros (con confirmación).
 - Filtrar por estado: Todos / Pendientes / Leídos.
@@ -133,24 +135,25 @@ Los datos se guardan en el `localStorage` del navegador y del mismo origen (`htt
 
 | Capa | Archivo | Responsabilidad |
 |------|---------|-----------------|
-| Model | `src/models/Libro.ts` | Datos del libro, interfaces, tipos y validaciones |
+| Model | `src/models/Libro.ts` | Datos del libro, interfaces, tipos y validaciones de campos |
+| Model | `src/models/CatalogoLibros.ts` | Colección de libros: IDs consecutivos, duplicados, búsqueda y filtros |
 | View | `src/views/LibroView.ts` | Renderiza la lista y mensajes, captura eventos del DOM |
-| Controller | `src/controllers/LibroController.ts` | CRUD, búsqueda, filtros; coordina Model, View y Service |
+| Controller | `src/controllers/LibroController.ts` | Recibe eventos, delega al modelo, persiste y actualiza la vista |
 | Service | `src/services/StorageService.ts` | Lectura y escritura en `localStorage` |
 | Entrada | `src/main.ts` | Crea las instancias y arranca la app |
 
 ### Flujo
 1. El usuario interactúa con la **Vista** (formulario, búsqueda, botones).
 2. La Vista notifica al **Controlador** mediante manejadores (`ManejadoresVista`).
-3. El Controlador usa el **Modelo** (validar, crear, actualizar) y el **Servicio** (persistir).
+3. El Controlador usa el **Modelo** (`CatalogoLibros`) para aplicar las reglas y el **Servicio** para persistir.
 4. El Controlador pide a la Vista que se vuelva a dibujar.
 
 La Vista no conoce el almacenamiento y el Modelo no conoce el DOM.
 
 ## Uso de TypeScript
 
-- **Clase** `Libro` con propiedades tipadas, métodos estáticos (`validar`, `crear`, `desdeData`) y métodos de instancia.
-- **Interfaces**: `LibroData`, `LibroInput`, `ResultadoValidacion`, `ManejadoresVista`.
+- **Clases**: `Libro` (datos y validaciones) y `CatalogoLibros` (reglas de la colección).
+- **Interfaces**: `LibroData`, `LibroInput`, `ResultadoValidacion`, `ResultadoOperacion`, `ManejadoresVista`.
 - **Tipos unión**: `FiltroEstado = "todos" | "leidos" | "pendientes"`, `TipoMensaje`.
 - Modo `strict` activado en `tsconfig.json`.
 
@@ -163,11 +166,17 @@ catalogo-libros/
 ├── tsconfig.json
 ├── src/
 │   ├── main.ts
-│   ├── models/Libro.ts
-│   ├── views/LibroView.ts
-│   ├── controllers/LibroController.ts
-│   ├── services/StorageService.ts
-│   └── style/styles.css
+│   ├── models/
+│   │   ├── Libro.ts
+│   │   └── CatalogoLibros.ts
+│   ├── views/
+│   │   └── LibroView.ts
+│   ├── controllers/
+│   │   └── LibroController.ts
+│   ├── services/
+│   │   └── StorageService.ts
+│   └── styles/
+│       └── styles.css
 └── README.md
 ```
 
@@ -175,4 +184,5 @@ catalogo-libros/
 
 - Título y autor: obligatorios, mínimo 2 caracteres.
 - Año: entero entre 1000 y el año actual + 1.
+- No se permiten dos libros con el mismo título y autor (sin distinguir mayúsculas ni espacios).
 
