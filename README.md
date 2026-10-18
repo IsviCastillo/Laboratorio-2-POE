@@ -1,4 +1,4 @@
-# 📚 Catálogo de Libros
+#  Catálogo de Libros
 
 Aplicación web para administrar un catálogo personal de libros. Desarrollada con **TypeScript** siguiendo la arquitectura **MVC**, sin frameworks, con persistencia en `localStorage`.
 
@@ -321,7 +321,7 @@ Extender el Catálogo de Libros del Laboratorio #2 manteniendo la arquitectura M
 
 10. **Sistema de recomendación.** Se recomiendan los libros pendientes de los géneros cuyo promedio es 3 o más. Se eligió este umbral para no sugerir géneros que el usuario calificó mal.
 
-11. **Compatibilidad con datos anteriores.** Los libros guardados antes del parcial no tienen género ni calificación. `StorageService` los carga con "Otro" y "Sin calificar", y renumera los IDs si no eran enteros. Así no se pierde información al actualizar.
+11. **Compatibilidad con datos anteriores.** Los libros guardados antes del parcial no tienen género ni calificación. `StorageService` los carga con "Otros" y "Sin calificar", y renumera los IDs si no eran enteros. Así no se pierde información al actualizar.
 
 12. **Seguridad.** La vista escapa el texto del usuario antes de insertarlo con `innerHTML`, para evitar inyección de HTML.
 
