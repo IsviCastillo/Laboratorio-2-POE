@@ -146,3 +146,97 @@ button.peligro:hover { background: #fbeceb; }
   font-weight: 600;
   vertical-align: middle;
 }
+
+/* CSS para el parcial 2 */
+
+select {
+  padding: .6rem .75rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fff;
+  color: var(--texto);
+}
+select:focus {
+  outline: 2px solid var(--acento);
+  border-color: var(--acento);
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .9rem;
+}
+
+.vista { display: grid; gap: 1.25rem; }
+.tabs { display: flex; gap: .5rem; }
+.tabs button {
+  flex: 1;
+  padding: .7rem 1rem;
+  font-weight: 600;
+}
+.tabs button.activo {
+  background: var(--primario);
+  border-color: var(--primario);
+  color: #fff;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: 0 0 .4rem;
+}
+.genero-tag {
+  display: inline-block;
+  padding: .1rem .55rem;
+  border-radius: 999px;
+  background: #efe7d6;
+  font-size: .8rem;
+  font-weight: 600;
+}
+.estrellas { color: var(--acento); letter-spacing: 1px; font-size: 1rem; }
+.estrellas.sin-calificar {
+  color: var(--suave);
+  font-size: .8rem;
+  letter-spacing: 0;
+  font-style: italic;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .75rem;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem .5rem;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: #faf8f3;
+  text-align: center;
+}
+.stat-valor { font-size: 1.8rem; font-weight: 700; color: var(--primario); }
+.stat-etiqueta { font-size: .8rem; color: var(--suave); }
+
+.lista-simple { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.lista-simple li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem;
+  padding: .65rem .9rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+.lista-simple li small { color: var(--suave); }
+.lista-simple li .autor { margin: 0; }
+
+@media (max-width: 560px) {
+  .fila { grid-template-columns: 1fr; gap: 0; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}

@@ -9,47 +9,104 @@
 <body>
   <header class="encabezado">
     <h1>Catálogo de Libros</h1>
-    <p>Administra tu biblioteca personal</p>
+    <p>Biblioteca personal</p>
   </header>
 
   <main class="contenedor">
     <div id="mensajes" class="mensajes" role="status" aria-live="polite"></div>
 
-    <section class="panel">
-      <h2 id="titulo-form">Registrar libro</h2>
-      <form id="form-libro" novalidate>
-        <div class="campo">
-          <label for="titulo">Título</label>
-          <input type="text" id="titulo" placeholder="Ej. Cien años de soledad" required />
-        </div>
-        <div class="campo">
-          <label for="autor">Autor</label>
-          <input type="text" id="autor" placeholder="Ej. Gabriel García Márquez" required />
-        </div>
-        <div class="campo">
-          <label for="anio">Año</label>
-          <input type="number" id="anio" placeholder="Ej. 1967" required />
-        </div>
-        <div class="botones">
-          <button type="submit" id="btn-guardar" class="primario">Agregar libro</button>
-          <button type="button" id="btn-cancelar" hidden>Cancelar</button>
-        </div>
-      </form>
-    </section>
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button type="button" class="activo" role="tab" data-tab="catalogo" aria-selected="true">Catálogo</button>
+      <button type="button" role="tab" data-tab="estadisticas" aria-selected="false">Estadísticas</button>
+    </nav>
 
-    <section class="panel">
-      <h2>Mis libros</h2>
-      <div class="herramientas">
-        <input type="search" id="buscar" placeholder=" Buscar por título, autor o #ID..." />
-        <div class="filtros" role="group" aria-label="Filtrar por estado">
-          <button type="button" data-filtro="todos" class="activo">Todos</button>
-          <button type="button" data-filtro="pendientes">Pendientes</button>
-          <button type="button" data-filtro="leidos">Leídos</button>
+    <!-- Pestaña del catálogo de libros -->
+    <div data-panel="catalogo" class="vista">
+      <section class="panel">
+        <h2 id="titulo-form">Registrar libro</h2>
+        <form id="form-libro" novalidate>
+          <div class="campo">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" placeholder="Ej. Cien años de soledad" required />
+          </div>
+          <div class="campo">
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" placeholder="Ej. Gabriel García Márquez" required />
+          </div>
+          <div class="fila">
+            <div class="campo">
+              <label for="anio">Año</label>
+              <input type="number" id="anio" placeholder="Ej. 1967" required />
+            </div>
+            <div class="campo">
+              <label for="genero">Género</label>
+              <select id="genero" required></select>
+            </div>
+            <div class="campo">
+              <label for="calificacion">Calificación</label>
+              <select id="calificacion">
+                <option value="0">Sin calificar</option>
+                <option value="1">★ (1)</option>
+                <option value="2">★★ (2)</option>
+                <option value="3">★★★ (3)</option>
+                <option value="4">★★★★ (4)</option>
+                <option value="5">★★★★★ (5)</option>
+              </select>
+            </div>
+          </div>
+          <div class="botones">
+            <button type="submit" id="btn-guardar" class="primario">Agregar libro</button>
+            <button type="button" id="btn-cancelar" hidden>Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Mis libros</h2>
+        <div class="herramientas">
+          <input type="search" id="buscar" placeholder="Buscar por título, autor, género o #ID..." />
+          <select id="filtro-estado" aria-label="Filtrar por estado">
+            <option value="todos">Todos los estados</option>
+            <option value="pendientes">Pendientes</option>
+            <option value="leidos">Leídos</option>
+          </select>
+          <select id="filtro-genero" aria-label="Filtrar por género"></select>
+          <select id="orden" aria-label="Ordenar por">
+            <option value="registro">Orden de registro</option>
+            <option value="titulo-asc">Título (A-Z)</option>
+            <option value="titulo-desc">Título (Z-A)</option>
+            <option value="anio-asc">Año (menor a mayor)</option>
+            <option value="anio-desc">Año (mayor a menor)</option>
+          </select>
         </div>
-      </div>
-      <p id="contador" class="contador"></p>
-      <div id="lista-libros" class="lista"></div>
-    </section>
+        <p id="contador" class="contador"></p>
+        <div id="lista-libros" class="lista"></div>
+      </section>
+    </div>
+
+    <!-- Pestaña de las estadísticas -->
+    <div data-panel="estadisticas" class="vista" hidden>
+      <section class="panel">
+        <h2>Resumen</h2>
+        <div class="stats">
+          <div class="stat"><span class="stat-valor" id="stat-total">0</span><span class="stat-etiqueta">Total</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-leidos">0</span><span class="stat-etiqueta">Leídos</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-pendientes">0</span><span class="stat-etiqueta">Pendientes</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-promedio">—</span><span class="stat-etiqueta">Calificación promedio ★</span></div>
+        </div>
+        <p id="stat-calificados" class="contador"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Por género</h2>
+        <ul id="lista-generos" class="lista-simple"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Te recomendamos leer</h2>
+        <ul id="lista-recomendaciones" class="lista-simple"></ul>
+      </section>
+    </div>
   </main>
 
   <script type="module" src="dist/main.js"></script>
