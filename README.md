@@ -4,6 +4,12 @@ Aplicación web para administrar un catálogo personal de libros. Desarrollada c
 
 > Este proyecto es la continuidad del **Laboratorio #2** y corresponde a la actualización del **Parcial 2**. La explicación de las mejoras y las decisiones de diseño está en la sección [Documento técnico](#documento-técnico).
 
+## 🎥 Video demostrativo
+
+▶️ **[Ver el video en YouTube](https://youtu.be/qC4JNx0mypI)**
+
+Se explica el código de las funcionalidades nuevas del Parcial 2 (validaciones, edición, eliminación, búsqueda, filtros, ordenamiento, estadísticas y recomendaciones) y se demuestra su funcionamiento en el navegador.
+
 ## Ejecución del proyecto
 
 Estas son las instrucciones para descargar y ejecutar el proyecto desde una computadora nueva. El procedimiento fue probado desde otro equipo.

@@ -73,7 +73,7 @@ export class LibroView {
     this.btnCancelar.addEventListener("click", () => m.onCancelarEdicion());
 
     // Búsqueda en tiempo real
-    this.inBuscar.addEventListener("input", () => m.onBuscar(this.inBuscar.value));
+    this.inBuscar.addEventListener("input", () => m.onBuscar(this.inBuscar.value)); 
 
     // Filtros y orden
     this.selFiltroEstado.addEventListener("change", () =>

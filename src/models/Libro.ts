@@ -53,7 +53,7 @@ export interface ResultadoValidacion {
 export class Libro implements LibroData {
   public static readonly ANIO_MINIMO = 1000;
   public static readonly CALIFICACION_MAXIMA = 5;
- public static readonly GENERO_POR_DEFECTO: string = GENEROS[GENEROS.length - 1];
+  public static readonly GENERO_POR_DEFECTO: string = GENEROS[GENEROS.length - 1];
 
   private static readonly REGEX_AUTOR = /^[\p{L}][\p{L}\s.'’-]*$/u;
   private static readonly REGEX_TITULO = /[\p{L}\p{N}]/u;
