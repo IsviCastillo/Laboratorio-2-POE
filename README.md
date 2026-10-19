@@ -6,7 +6,7 @@ Aplicación web para administrar un catálogo personal de libros. Desarrollada c
 
 ## 🎥 Video demostrativo
 
-▶️ **[Ver el video en Google Drive](https://drive.google.com/file/d/1XRlt1Zrhdj1JDOsEoit3DW2SXNWVVaKf/view?usp=sharing)**
+▶️ **[Ver el video en Google Drive](https://drive.google.com/file/d/1zBBjzkxBsSBiOLuy1WiHAiMvcncVs28P/view?usp=sharing)**
 
 Se explica el código de las funcionalidades nuevas del Parcial 2 (validaciones, edición, eliminación, búsqueda, filtros, ordenamiento, estadísticas y recomendaciones) y se demuestra su funcionamiento en el navegador.
 
